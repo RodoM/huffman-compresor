@@ -16,10 +16,11 @@ void btree_destruir(BTree nodo) {
 }
 
 // La primera vez que se llama, left y right son NULL.
-BTree btree_unir(char dato, BTree left, BTree right) {
+BTree btree_unir(char caracter, BTree left, BTree right) {
   BTree nuevoNodo = malloc(sizeof(struct _BTNodo));
   assert(nuevoNodo != NULL);
-  nuevoNodo->dato = dato;
+  nuevoNodo->caracter = caracter;
+  nuevoNodo->frecuencia = left->frecuencia + right->frecuencia;
   nuevoNodo->left = left;
   nuevoNodo->right = right;
   return nuevoNodo;
@@ -28,14 +29,14 @@ BTree btree_unir(char dato, BTree left, BTree right) {
 void btree_inorder(BTree arbol, FuncionVisitante visit) {
   if (arbol != NULL) {
     btree_inorder(arbol->left, visit);
-    visit(arbol->dato);
+    visit(arbol->caracter);
     btree_inorder(arbol->right, visit);
   }
 }
 
 void btree_preorder(BTree arbol, FuncionVisitante visit) {
   if (arbol != NULL) {
-    visit(arbol->dato);
+    visit(arbol->caracter);
     btree_preorder(arbol->left, visit);
     btree_preorder(arbol->right, visit);
   }
@@ -45,7 +46,7 @@ void btree_postorder(BTree arbol, FuncionVisitante visit) {
   if (arbol != NULL) {
     btree_postorder(arbol->left, visit);
     btree_postorder(arbol->right, visit);
-    visit(arbol->dato);
+    visit(arbol->caracter);
   }
 }
 
@@ -71,7 +72,8 @@ void btree_recorrer(BTree arbol, BTreeOrdenDeRecorrido orden,
 BTree btree_copiar(BTree arbol) {
   if (arbol == NULL) { return NULL; }
   BTree arbolCopia = malloc(sizeof(struct _BTNodo));
-  arbolCopia->dato = arbol->dato;
+  arbolCopia->caracter = arbol->caracter;
+  arbolCopia->frecuencia = arbol->frecuencia;
   arbolCopia->left = btree_copiar(arbol->left);
   arbolCopia->right = btree_copiar(arbol->right);
   return arbolCopia;
