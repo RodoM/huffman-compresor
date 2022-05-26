@@ -86,24 +86,83 @@ BTree* arr_mergesort(BTree *a, int n) {
 // -> [7,(6),6,5,4,(3),3] -> [7,(6),6,5,4] -> [(9),7,(6),6,5,4] -> [(9),7,(6),6] -> [(12),(9),7,(6),6] -> [(12),(9),7]
 // -> [(12),(9),7] -> [(16),(12),(9),7] -> [(16),(12)] -> [(28),(16),(12)] -> [(28)] -> (28)
 
-void arr_insertar_ordenadamente(BTree* ascii_chars, BTree nuevoArbol, int len) {
-  for (int i = len - 1; i >= 0; i--) {
-    if (nuevoArbol->frecuencia >= ascii_chars[i]->frecuencia) {
-      for (int j = len - 1; j != i; j--) {
-        ascii_chars[j] = ascii_chars[j-1];
-      }
-      ascii_chars[i] = nuevoArbol;
-    }
-  }
+// void arr_insertar_ordenadamente(BTree* ascii_chars, BTree nuevoArbol, int len) {
+//   for (int i = len - 1; i >= 0; i--) {
+//     if (nuevoArbol->frecuencia >= ascii_chars[i]->frecuencia) {
+//       for (int j = len - 1; j != i; j--) {
+//         ascii_chars[j] = ascii_chars[j-1];
+//       }
+//       ascii_chars[i] = nuevoArbol;
+//     }
+//   }
+// }
+
+void arr_insertar_ordenadamente(BTree* ascii_chars_ordenado, BTree nuevoArbol, int len) {
+	int p;
+	/* Determine the position where the new value will be insert.*/
+	for(int i = 0; i < len; i++) { 
+		if(nuevoArbol->frecuencia >= ascii_chars_ordenado[i]->frecuencia) {
+			p = i;
+			break;
+		} else {
+			p = i + 1;
+		}
+	}
+	/* move all data at right side of the array */
+	for(int i = len + 1; i >= p; i--)
+		ascii_chars_ordenado[i] = ascii_chars_ordenado[i-1];
+
+	/* insert value at the proper position */
+	ascii_chars_ordenado[p] = nuevoArbol;
 }
 
-BTree huff_chars_tree (BTree* ascii_chars) {
+BTree huff_chars_tree (BTree* ascii_chars_ordenado) {
   int len = 256;
   while (len > 1) {
-    BTree nuevoArbol = btree_unir('\0', ascii_chars[len - 1], ascii_chars[len - 2]);
+    BTree nuevoArbol = btree_unir('\0', ascii_chars_ordenado[len - 1], ascii_chars_ordenado[len - 2]);
     printf("Frecuencia: %d\n", nuevoArbol->frecuencia);
     len = len - 1;
-    arr_insertar_ordenadamente(ascii_chars, nuevoArbol, len);
+    arr_insertar_ordenadamente(ascii_chars_ordenado, nuevoArbol, len);
   }
-  return ascii_chars[0];
+  return ascii_chars_ordenado[0];
+}
+
+char* aumentar_len (char* codificacion, int* len_max) {
+	*len_max = *len_max * 2;
+	char* nuevaDireccion = realloc(codificacion, *len_max);
+
+	return nuevaDireccion;
+}
+
+//Retorna un arr con el orden ASCII con la codificacion de cada uno de los 256 caracteres.
+//char* arr = malloc(sizeof(int)*256);
+
+//cuando empiece el sub-arbol derecho la codificacion vuelva a estar vacia.
+
+void codificar_caracteres(BTree arbolGenerado, char* codificacion, int* len_codificacion, int* len_max, char** arr_codificaciones) {
+	if (arbolGenerado->left != NULL && arbolGenerado->right != NULL) {
+		//Si la longitud de la codificacion es igual a la longitud maxima predeterminada, aumentamos la misma.
+		if (*len_codificacion == *len_max)
+			codificacion = aumentar_len(codificacion, len_max);
+
+		codificacion[*len_codificacion] = '0';
+		*len_codificacion += 1;
+		printf("codificacion para izq: %s", codificacion);
+		codificar_caracteres(arbolGenerado->left, codificacion, len_codificacion, len_max, arr_codificaciones);
+		*len_codificacion -= 1;
+
+		if (*len_codificacion == *len_max)
+			codificacion = aumentar_len(codificacion, len_max);
+
+		codificacion[*len_codificacion] = '1';
+		*len_codificacion += 1;
+		printf("codificacion para der: %s", codificacion);
+		codificar_caracteres(arbolGenerado->right, codificacion, len_codificacion, len_max, arr_codificaciones);
+		*len_codificacion -= 1;
+	}
+
+	else if (arbolGenerado->left == NULL && arbolGenerado->right == NULL) {
+		arr_codificaciones[(int)arbolGenerado->caracter] = malloc(sizeof(char)* *len_codificacion);
+		arr_codificaciones[(int)arbolGenerado->caracter] = codificacion;
+	}
 }

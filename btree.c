@@ -29,14 +29,14 @@ BTree btree_unir(char caracter, BTree left, BTree right) {
 void btree_inorder(BTree arbol, FuncionVisitante visit) {
   if (arbol != NULL) {
     btree_inorder(arbol->left, visit);
-    visit(arbol->caracter);
+    visit(arbol->caracter, arbol->frecuencia);
     btree_inorder(arbol->right, visit);
   }
 }
 
 void btree_preorder(BTree arbol, FuncionVisitante visit) {
   if (arbol != NULL) {
-    visit(arbol->caracter);
+    visit(arbol->caracter, arbol->frecuencia);
     btree_preorder(arbol->left, visit);
     btree_preorder(arbol->right, visit);
   }
@@ -46,7 +46,7 @@ void btree_postorder(BTree arbol, FuncionVisitante visit) {
   if (arbol != NULL) {
     btree_postorder(arbol->left, visit);
     btree_postorder(arbol->right, visit);
-    visit(arbol->caracter);
+    visit(arbol->caracter, arbol->frecuencia);
   }
 }
 

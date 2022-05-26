@@ -1,7 +1,7 @@
 #ifndef __BTREE_H_
 #define __BTREE_H_
 
-typedef void (*FuncionVisitante)(char caracter);
+typedef void (*FuncionVisitante)(char caracter, int frecuencia);
 typedef int (*FuncionMaximo)(int a, int b);
 typedef void (*FuncionVisitanteExtra) (int caracter, void *extra);
 
