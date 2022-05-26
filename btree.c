@@ -69,6 +69,17 @@ void btree_recorrer(BTree arbol, BTreeOrdenDeRecorrido orden,
   }
 }
 
+int btree_nnodos(BTree arbol) {
+  int cantNodos = 1;
+  if (arbol == NULL) {
+    return 0;
+  } else {
+    cantNodos += btree_nnodos(arbol->left);
+    cantNodos += btree_nnodos(arbol->right);
+    return cantNodos;
+  }
+}
+
 int btree_altura(BTree arbol) {
   if (arbol == NULL) {
     return -1;

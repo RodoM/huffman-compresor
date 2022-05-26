@@ -122,22 +122,26 @@ BTree huff_chars_tree (BTree* ascii_chars_ordenado) {
 //char* arr = malloc(sizeof(int)*256);
 
 //cuando empiece el sub-arbol derecho la codificacion vuelva a estar vacia.
-void codificar_caracteres(BTree arbolGenerado, char* codificacion, int* len_codificacion, char** arr_codificaciones) {
+void codificar_caracteres(BTree arbolGenerado, char* codificacion, char* serializacion, int* len_codificacion, char** arr_codificaciones) {
 	if (arbolGenerado->left != NULL && arbolGenerado->right != NULL) {
 		codificacion[*len_codificacion] = '0';
 		*len_codificacion += 1;
-		codificar_caracteres(arbolGenerado->left, codificacion, len_codificacion, arr_codificaciones);
+		codificar_caracteres(arbolGenerado->left, codificacion, serializacion, len_codificacion, arr_codificaciones);
 		*len_codificacion -= 1;
 
 		codificacion[*len_codificacion] = '1';
 		*len_codificacion += 1;
-		codificar_caracteres(arbolGenerado->right, codificacion, len_codificacion, arr_codificaciones);
+		codificar_caracteres(arbolGenerado->right, codificacion, serializacion, len_codificacion, arr_codificaciones);
 		*len_codificacion -= 1;
 	}
 
 	else if (arbolGenerado->left == NULL && arbolGenerado->right == NULL) {
 		arr_codificaciones[(int)arbolGenerado->caracter] = malloc(sizeof(char)* *len_codificacion);
 		memcpy(arr_codificaciones[(int)arbolGenerado->caracter], codificacion, *len_codificacion);
+
+		char* c = malloc(sizeof(char));
+		c[0] = (char)arbolGenerado->caracter;
+		strcat(serializacion, c);
 	}
 }
 
@@ -157,11 +161,13 @@ char* codificar_archivo(char** arr_codificaciones, char* file_arr, int len_file)
 	return codificado;
 }
 
-char* codificar_arbol(BTree arbolGenerado) {
-	int sz = 1024;
-	char* codificado = malloc(sizeof(char) * sz);
-	int j = 0;
+void serializar_arbol(BTree arbolGenerado, char* codificado) {
 	if (arbolGenerado->left == NULL && arbolGenerado->right == NULL) {
-		codificado 
+		strcat(codificado, "1");
+	}
+	else if (arbolGenerado->left != NULL && arbolGenerado->right != NULL) {
+		strcat(codificado, "0");
+		serializar_arbol(arbolGenerado->left, codificado);
+		serializar_arbol(arbolGenerado->right, codificado);
 	}
 }

@@ -40,6 +40,11 @@ BTree btree_unir(int caracter, BTree left, BTree right);
 void btree_recorrer(BTree arbol, BTreeOrdenDeRecorrido orden, FuncionVisitante visit);
 
 /**
+* Devuelve la cantidad de nodos de un arbol.
+*/
+int btree_nnodos(BTree arbol);
+
+/**
  * Retorna la altura de un arbol.
  */
 int btree_altura(BTree arbol);
