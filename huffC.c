@@ -3,45 +3,18 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <assert.h>
+#include "io.h"
 #include "btree.h"
 #include "funciones.h"
 
-static void imprimir_caracter(char caracter, int frecuencia) {
-	printf("(%c-%d)", caracter, frecuencia);
-}
-
-static inline void quit(const char *s) {
-	perror(s);
-	exit(1);
-}
-
-char * readfile(const char *path, int *len) {
-	int sz = 1024;
-	char *buf = malloc(sz);
-	FILE *f = fopen(path, "rb");
-	int c, i = 0;
-
-	if (f == NULL)
-		quit("readfile.fopen");
-
-	while ((c = getc(f)) != EOF) {
-		if (i == sz) {
-			sz = sz * 2;
-			buf = realloc(buf, sz);
-		}
-		buf[i++] = c;
-	}
-
-	fclose(f);
-
-	*len = i;
-	return buf;
-}
+// static void imprimir_caracter(char caracter, int frecuencia) {
+// 	printf("(%c-%d)", caracter, frecuencia);
+// }
 
 int main() {
 
   int len = 0;
-  char* res = readfile("/home/rodom/Escritorio/TP_EDyA_2022/asd", &len);
+  char* res = readfile("asd", &len);
   // printf("%s, %d\n", res, len);
 
 	BTree* ascii_chars = arr_ascii_chars();
@@ -60,21 +33,26 @@ int main() {
 
   BTree arbolGenerado = huff_chars_tree(ascii_chars_ordenado); 
 	//btree destruir por cada arbol.
-  btree_recorrer(arbolGenerado, BTREE_RECORRIDO_IN, imprimir_caracter);
-  puts("");
+  // btree_recorrer(arbolGenerado, BTREE_RECORRIDO_IN, imprimir_caracter);
+  // puts("");
 	// for (int i = 0; i < 256; i++) {
   //   printf("ASCII: %d (%c, %d)\n", i, ascii_chars_ordenado[i]->caracter, ascii_chars_ordenado[i]->frecuencia);
   // }
 
-	char** arr_codificaciones = malloc(sizeof(char*)*256);
-	char* codificacion = malloc(sizeof(char)*1028);
-	int len_codificacion = 0;
-	int len_max = 1028;
+	printf("La altura del arbol es: %d\n", btree_altura(arbolGenerado));
 
-	codificar_caracteres(arbolGenerado, codificacion, &len_codificacion, &len_max, arr_codificaciones);
+	char** arr_codificaciones = malloc(sizeof(char*)*256);
+	char* codificacion = malloc(sizeof(char) * btree_altura(arbolGenerado));
+	int len_codificacion = 0;
+
+	codificar_caracteres(arbolGenerado, codificacion, &len_codificacion, arr_codificaciones);
 	
+	// for (int i = 0; i < 256; i++)
+	// 	printf("%s", arr_codificaciones[i]);
+
+	printf("%s\n", arr_codificaciones[(unsigned)'e']);
 	for (int i = 0; i < 256; i++)
-		printf("%s", arr_codificaciones[i]);
+		printf("%d - %c, %s\n", i, i, arr_codificaciones[i]);
 
   return 0;
 }

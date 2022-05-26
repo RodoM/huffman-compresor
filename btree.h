@@ -2,8 +2,6 @@
 #define __BTREE_H_
 
 typedef void (*FuncionVisitante)(char caracter, int frecuencia);
-typedef int (*FuncionMaximo)(int a, int b);
-typedef void (*FuncionVisitanteExtra) (int caracter, void *extra);
 
 typedef enum {
   BTREE_RECORRIDO_IN,
@@ -40,6 +38,11 @@ BTree btree_unir(char caracter, BTree left, BTree right);
  * Recorrido del arbol, utilizando la funcion pasada.
  */
 void btree_recorrer(BTree arbol, BTreeOrdenDeRecorrido orden, FuncionVisitante visit);
+
+/**
+ * Retorna la altura de un arbol.
+ */
+int btree_altura(BTree arbol);
 
 /**
  * Crea y retorna una copia del arbol pasado como argumento.

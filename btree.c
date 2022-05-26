@@ -69,6 +69,17 @@ void btree_recorrer(BTree arbol, BTreeOrdenDeRecorrido orden,
   }
 }
 
+int btree_altura(BTree arbol) {
+  if (arbol == NULL) {
+    return -1;
+  } else {
+    int left = btree_altura(arbol->left);
+    int right = btree_altura(arbol->right);
+    if (left > right) { return left + 1; }
+    else { return right + 1; }
+  }
+}
+
 BTree btree_copiar(BTree arbol) {
   if (arbol == NULL) { return NULL; }
   BTree arbolCopia = malloc(sizeof(struct _BTNodo));
