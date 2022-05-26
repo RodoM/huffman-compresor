@@ -1,5 +1,5 @@
-#ifndef _IO_H_
-#define _IO_H_
+#ifndef __IO_H_
+#define __IO_H_
 
 /*
  * Lee un archivo y devuelve sus contenidos en un buffer obtenido con

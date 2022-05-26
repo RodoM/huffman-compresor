@@ -16,7 +16,7 @@ void btree_destruir(BTree nodo) {
 }
 
 // La primera vez que se llama, left y right son NULL.
-BTree btree_unir(char caracter, BTree left, BTree right) {
+BTree btree_unir(int caracter, BTree left, BTree right) {
   BTree nuevoNodo = malloc(sizeof(struct _BTNodo));
   assert(nuevoNodo != NULL);
   nuevoNodo->caracter = caracter;

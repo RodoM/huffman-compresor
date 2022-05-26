@@ -13,4 +13,6 @@ BTree huff_chars_tree (BTree* ascii_chars);
 
 void codificar_caracteres(BTree arbolGenerado, char* codificacion, int* len_codificacion, char** arr_codificaciones);
 
+char* codificar_archivo(char** arr_codificaciones, char* file_arr, int len_file);
+
 #endif
