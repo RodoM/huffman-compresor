@@ -1,9 +1,9 @@
 FLAGS = -Wall -Wextra -Werror -std=c99
 
-programa: huffC.o funciones.o btree.o io.o
+huffC: huffc.o funciones.o btree.o io.o
 	$(CC) -o $@ $^ $(FLAGS)
 
-huffC.o: huffC.c funciones.h btree.h io.h
+huffC.o: huffc.c funciones.h btree.h io.h
 	$(CC) -c $< $(FLAGS)
 
 funciones.o: funciones.c funciones.h btree.h
@@ -17,6 +17,6 @@ io.o: io.c io.h
 
 clean:
 	rm *.o
-	rm programa
+	rm huffC
 
 .PHONY = clean

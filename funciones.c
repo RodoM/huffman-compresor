@@ -139,8 +139,10 @@ void codificar_valores(BTree arbolGenerado, char* codificacion, char* serializac
 		arr_codificaciones[(int)arbolGenerado->valor] = malloc(sizeof(char)* *len_codificacion);
 		memcpy(arr_codificaciones[(int)arbolGenerado->valor], codificacion, *len_codificacion);
 
-		char* c = malloc(sizeof(char));
+		char* c = malloc(sizeof(char)*2);
+		printf("valor: %c\n", (char)arbolGenerado->valor);
 		c[0] = (char)arbolGenerado->valor;
+		c[1] = '\0';
 		strcat(serializacion, c);
 	}
 }
