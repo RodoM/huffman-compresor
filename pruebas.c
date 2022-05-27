@@ -5,7 +5,7 @@
 #include <assert.h>
 
 typedef struct {
-  __attribute__((unused)) char caracter;
+  __attribute__((unused)) char valor;
   int frecuencia;
 } Tupla;
 
@@ -13,7 +13,7 @@ int main() {
   Tupla tupla;
   tupla.frecuencia = 2;
 
-  printf("Caracter: %s, Frecuencia: %d\n", tupla.caracter, tupla.frecuencia);
+  printf("valor: %s, Frecuencia: %d\n", tupla.valor, tupla.frecuencia);
 
   return 0;
 }

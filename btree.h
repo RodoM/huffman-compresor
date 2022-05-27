@@ -1,7 +1,7 @@
 #ifndef __BTREE_H_
 #define __BTREE_H_
 
-typedef void (*FuncionVisitante)(char caracter, int frecuencia);
+typedef void (*FuncionVisitante)(char valor, int frecuencia);
 
 typedef enum {
   BTREE_RECORRIDO_IN,
@@ -10,10 +10,10 @@ typedef enum {
 } BTreeOrdenDeRecorrido;
 
 struct _BTNodo {
-  int caracter;
+  int valor;
   int frecuencia;
-  struct _BTNodo *left;
-  struct _BTNodo *right;
+  struct _BTNodo *izq;
+  struct _BTNodo *der;
 };
 
 typedef struct _BTNodo *BTree;
@@ -29,10 +29,10 @@ BTree btree_crear();
 void btree_destruir(BTree nodo);
 
 /**
- * Crea un nuevo arbol, con el caracter dado en el nodo raiz, y los subarboles dados
+ * Crea un nuevo arbol, con el valor dado en el nodo raiz, y los subarboles dados
  * a izquierda y derecha.
  */
-BTree btree_unir(int caracter, BTree left, BTree right);
+BTree btree_unir(int valor, BTree izq, BTree der);
 
 /**
  * Recorrido del arbol, utilizando la funcion pasada.

@@ -8,10 +8,10 @@ BTree* arr_ascii_chars() {
   BTree* ascii_chars = malloc(sizeof(BTree) * 256);
   for (int i = 0; i < 256; i++) {
     BTree nuevoArbol = malloc(sizeof(struct _BTNodo));
-    nuevoArbol->caracter = i;
+    nuevoArbol->valor = i;
     nuevoArbol->frecuencia = 0;
-    nuevoArbol->left = NULL;
-    nuevoArbol->right = NULL;
+    nuevoArbol->izq = NULL;
+    nuevoArbol->der = NULL;
 
     ascii_chars[i] = nuevoArbol;
   }
@@ -100,7 +100,7 @@ void arr_insertar_ordenadamente(BTree* ascii_chars_ordenado, BTree nuevoArbol, i
 			p = i + 1;
 		}
 	}
-	/* move all data at right side of the array */
+	/* move all data at der side of the array */
 	for(int i = len + 1; i >= p; i--)
 		ascii_chars_ordenado[i] = ascii_chars_ordenado[i-1];
 
@@ -118,29 +118,29 @@ BTree huff_chars_tree (BTree* ascii_chars_ordenado) {
   return ascii_chars_ordenado[0];
 }
 
-//Retorna un arr con el orden ASCII con la codificacion de cada uno de los 256 caracteres.
+//Retorna un arr con el orden ASCII con la codificacion de cada uno de los 256 valores.
 //char* arr = malloc(sizeof(int)*256);
 
 //cuando empiece el sub-arbol derecho la codificacion vuelva a estar vacia.
-void codificar_caracteres(BTree arbolGenerado, char* codificacion, char* serializacion, int* len_codificacion, char** arr_codificaciones) {
-	if (arbolGenerado->left != NULL && arbolGenerado->right != NULL) {
+void codificar_valores(BTree arbolGenerado, char* codificacion, char* serializacion, int* len_codificacion, char** arr_codificaciones) {
+	if (arbolGenerado->izq != NULL && arbolGenerado->der != NULL) {
 		codificacion[*len_codificacion] = '0';
 		*len_codificacion += 1;
-		codificar_caracteres(arbolGenerado->left, codificacion, serializacion, len_codificacion, arr_codificaciones);
+		codificar_valores(arbolGenerado->izq, codificacion, serializacion, len_codificacion, arr_codificaciones);
 		*len_codificacion -= 1;
 
 		codificacion[*len_codificacion] = '1';
 		*len_codificacion += 1;
-		codificar_caracteres(arbolGenerado->right, codificacion, serializacion, len_codificacion, arr_codificaciones);
+		codificar_valores(arbolGenerado->der, codificacion, serializacion, len_codificacion, arr_codificaciones);
 		*len_codificacion -= 1;
 	}
 
-	else if (arbolGenerado->left == NULL && arbolGenerado->right == NULL) {
-		arr_codificaciones[(int)arbolGenerado->caracter] = malloc(sizeof(char)* *len_codificacion);
-		memcpy(arr_codificaciones[(int)arbolGenerado->caracter], codificacion, *len_codificacion);
+	else if (arbolGenerado->izq == NULL && arbolGenerado->der == NULL) {
+		arr_codificaciones[(int)arbolGenerado->valor] = malloc(sizeof(char)* *len_codificacion);
+		memcpy(arr_codificaciones[(int)arbolGenerado->valor], codificacion, *len_codificacion);
 
 		char* c = malloc(sizeof(char));
-		c[0] = (char)arbolGenerado->caracter;
+		c[0] = (char)arbolGenerado->valor;
 		strcat(serializacion, c);
 	}
 }
@@ -162,12 +162,12 @@ char* codificar_archivo(char** arr_codificaciones, char* file_arr, int len_file)
 }
 
 void serializar_arbol(BTree arbolGenerado, char* codificado) {
-	if (arbolGenerado->left == NULL && arbolGenerado->right == NULL) {
+	if (arbolGenerado->izq == NULL && arbolGenerado->der == NULL) {
 		strcat(codificado, "1");
 	}
-	else if (arbolGenerado->left != NULL && arbolGenerado->right != NULL) {
+	else if (arbolGenerado->izq != NULL && arbolGenerado->der != NULL) {
 		strcat(codificado, "0");
-		serializar_arbol(arbolGenerado->left, codificado);
-		serializar_arbol(arbolGenerado->right, codificado);
+		serializar_arbol(arbolGenerado->izq, codificado);
+		serializar_arbol(arbolGenerado->der, codificado);
 	}
 }

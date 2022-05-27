@@ -92,14 +92,14 @@ char * implode(char *bits, int len, int *nlen)
 		/* Nota: [i] contiene la próxima posición de [bits] a leer */
 		int k;
 		char c = 0;
-		int n_left = len - i;
+		int n_izq = len - i;
 		/* Los bits que faltaban de [bits] */
-		for (k = 0; k < n_left; k++)
+		for (k = 0; k < n_izq; k++)
 			c = (c<<1) | (bits[i++] == '1');
 		/* Un único 1 */
 		c = (c<<1) | 1;
 		/* Tantos ceros como hagan falta llenar el byte */
-		c = c << (CHAR_BIT - 1 - n_left);
+		c = c << (CHAR_BIT - 1 - n_izq);
 		buf[j++] = c;
 	}
 

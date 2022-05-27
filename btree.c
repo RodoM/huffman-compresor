@@ -9,44 +9,44 @@ BTree btree_crear() {
 
 void btree_destruir(BTree nodo) {
   if (nodo != NULL) {
-    btree_destruir(nodo->left);
-    btree_destruir(nodo->right);
+    btree_destruir(nodo->izq);
+    btree_destruir(nodo->der);
     free(nodo);
   }
 }
 
-// La primera vez que se llama, left y right son NULL.
-BTree btree_unir(int caracter, BTree left, BTree right) {
+// La primera vez que se llama, izq y der son NULL.
+BTree btree_unir(int valor, BTree izq, BTree der) {
   BTree nuevoNodo = malloc(sizeof(struct _BTNodo));
   assert(nuevoNodo != NULL);
-  nuevoNodo->caracter = caracter;
-  nuevoNodo->frecuencia = left->frecuencia + right->frecuencia;
-  nuevoNodo->left = left;
-  nuevoNodo->right = right;
+  nuevoNodo->valor = valor;
+  nuevoNodo->frecuencia = izq->frecuencia + der->frecuencia;
+  nuevoNodo->izq = izq;
+  nuevoNodo->der = der;
   return nuevoNodo;
 }
 
 void btree_inorder(BTree arbol, FuncionVisitante visit) {
   if (arbol != NULL) {
-    btree_inorder(arbol->left, visit);
-    visit(arbol->caracter, arbol->frecuencia);
-    btree_inorder(arbol->right, visit);
+    btree_inorder(arbol->izq, visit);
+    visit(arbol->valor, arbol->frecuencia);
+    btree_inorder(arbol->der, visit);
   }
 }
 
 void btree_preorder(BTree arbol, FuncionVisitante visit) {
   if (arbol != NULL) {
-    visit(arbol->caracter, arbol->frecuencia);
-    btree_preorder(arbol->left, visit);
-    btree_preorder(arbol->right, visit);
+    visit(arbol->valor, arbol->frecuencia);
+    btree_preorder(arbol->izq, visit);
+    btree_preorder(arbol->der, visit);
   }
 }
 
 void btree_postorder(BTree arbol, FuncionVisitante visit) {
   if (arbol != NULL) {
-    btree_postorder(arbol->left, visit);
-    btree_postorder(arbol->right, visit);
-    visit(arbol->caracter, arbol->frecuencia);
+    btree_postorder(arbol->izq, visit);
+    btree_postorder(arbol->der, visit);
+    visit(arbol->valor, arbol->frecuencia);
   }
 }
 
@@ -74,8 +74,8 @@ int btree_nnodos(BTree arbol) {
   if (arbol == NULL) {
     return 0;
   } else {
-    cantNodos += btree_nnodos(arbol->left);
-    cantNodos += btree_nnodos(arbol->right);
+    cantNodos += btree_nnodos(arbol->izq);
+    cantNodos += btree_nnodos(arbol->der);
     return cantNodos;
   }
 }
@@ -84,19 +84,19 @@ int btree_altura(BTree arbol) {
   if (arbol == NULL) {
     return -1;
   } else {
-    int left = btree_altura(arbol->left);
-    int right = btree_altura(arbol->right);
-    if (left > right) { return left + 1; }
-    else { return right + 1; }
+    int izq = btree_altura(arbol->izq);
+    int der = btree_altura(arbol->der);
+    if (izq > der) { return izq + 1; }
+    else { return der + 1; }
   }
 }
 
 BTree btree_copiar(BTree arbol) {
   if (arbol == NULL) { return NULL; }
   BTree arbolCopia = malloc(sizeof(struct _BTNodo));
-  arbolCopia->caracter = arbol->caracter;
+  arbolCopia->valor = arbol->valor;
   arbolCopia->frecuencia = arbol->frecuencia;
-  arbolCopia->left = btree_copiar(arbol->left);
-  arbolCopia->right = btree_copiar(arbol->right);
+  arbolCopia->izq = btree_copiar(arbol->izq);
+  arbolCopia->der = btree_copiar(arbol->der);
   return arbolCopia;
 }
