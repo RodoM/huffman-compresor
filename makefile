@@ -1,12 +1,12 @@
 FLAGS = -Wall -Wextra -Werror -std=c99
 
-huffC: huffc.o funciones.o btree.o io.o
+huffC: huffc.o fcomprimir.o btree.o io.o
 	$(CC) -o $@ $^ $(FLAGS)
 
-huffC.o: huffc.c funciones.h btree.h io.h
+huffC.o: huffc.c fcomprimir.h btree.h io.h
 	$(CC) -c $< $(FLAGS)
 
-funciones.o: funciones.c funciones.h btree.h
+fcomprimir.o: fcomprimir.c fcomprimir.h btree.h
 	$(CC) -c $< $(FLAGS)
 
 btree.o: btree.c btree.h
@@ -20,3 +20,15 @@ clean:
 	rm huffC
 
 .PHONY = clean
+
+
+# huffD: huffd.o fdescomprimir.o io.o	
+# 	$(CC) -o $@ $^ $(FLAGS)
+
+# huffD.o: huffd.c fdescomprimir.h io.huffC
+# 	$(CC) -c $< $(FLAGS)
+
+# fdescomprimir.o: fdescomprimir.c fdescomprimir.h
+# 	$(CC) -c $< $(FLAGS)	
+
+# rm huffD

@@ -140,7 +140,6 @@ void codificar_valores(BTree arbolGenerado, char* codificacion, char* serializac
 		memcpy(arr_codificaciones[(int)arbolGenerado->valor], codificacion, *len_codificacion);
 
 		char* c = malloc(sizeof(char)*2);
-		printf("valor: %c\n", (char)arbolGenerado->valor);
 		c[0] = (char)arbolGenerado->valor;
 		c[1] = '\0';
 		strcat(serializacion, c);
@@ -150,6 +149,7 @@ void codificar_valores(BTree arbolGenerado, char* codificacion, char* serializac
 char* codificar_archivo(char** arr_codificaciones, char* file_arr, int len_file) {
 	int sz = 1024;
 	char* codificado = malloc(sizeof(char) * sz);
+	codificado[0] = 0;
 	int j = 0;
 	for(int i = 0; i < len_file; i++){
 		unsigned char c = file_arr[i];

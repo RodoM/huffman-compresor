@@ -1,5 +1,5 @@
-#ifndef __FUNCIONES_H_
-#define __FUNCIONES_H_
+#ifndef __FCOMPRIMIR_H_
+#define __FCOMPRIMIR_H_
 
 BTree* arr_ascii_chars();
 
