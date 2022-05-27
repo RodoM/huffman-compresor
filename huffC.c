@@ -1,17 +1,9 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
-#include <limits.h>
-#include <assert.h>
 #include <string.h>
 #include "btree.h"
 #include "funciones.h"
 #include "io.h"
-
-static inline void quit(const char *s) {
-	perror(s);
-	exit(1);
-}
 
 int main() {
 
@@ -42,7 +34,7 @@ int main() {
 	codificar_valores(arbolGenerado, codificacion, valores_serializacion, &len_codificacion, arr_codificaciones);
 	
 	for (int i = 0; i < 256; i++)
-		printf("%d - %c, %s\n", i, i, arr_codificaciones[i]);
+		printf("%d: %c, %s\n", i, i, arr_codificaciones[i]);
 
 	char* cadena_codificada = codificar_archivo(arr_codificaciones, res, len);
 	printf("cadena codificada: %s\n", cadena_codificada);
