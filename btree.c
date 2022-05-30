@@ -3,10 +3,6 @@
 #include <stdio.h>
 #include "btree.h"
 
-BTree btree_crear() {
-  return NULL;
-}
-
 void btree_destruir(BTree nodo) {
   if (nodo != NULL) {
     btree_destruir(nodo->izq);

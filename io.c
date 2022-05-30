@@ -4,14 +4,12 @@
 #include <limits.h>
 #include <assert.h>
 
-static inline void quit(const char *s)
-{
+static inline void quit(const char *s) {
 	perror(s);
 	exit(1);
 }
 
-char * readfile(const char *path, int *len)
-{
+char * readfile(const char *path, int *len) {
 	int sz = 1024;
 	char *buf = malloc(sz);
 	FILE *f = fopen(path, "rb");
@@ -34,8 +32,7 @@ char * readfile(const char *path, int *len)
 	return buf;
 }
 
-void writefile(const char *path, char *buf, int len)
-{
+void writefile(const char *path, char *buf, int len) {
 	FILE *f = fopen(path, "wb");
 	int i;
 
@@ -48,21 +45,18 @@ void writefile(const char *path, char *buf, int len)
 	fclose(f);
 }
 
-static char charbit(int i)
-{
+static char charbit(int i) {
 	if (i)
 		return '1';
 	else
 		return '0';
 }
 
-static inline int div_up(int m, int n)
-{
+static inline int div_up(int m, int n) {
 	return (m + (n-1)) / n;
 }
 
-char * implode(char *bits, int len, int *nlen)
-{
+char * implode(char *bits, int len, int *nlen) {
 	int i, j;
 
 	/*
@@ -108,8 +102,7 @@ char * implode(char *bits, int len, int *nlen)
 	return buf;
 }
 
-char * explode(char *buf, int len, int *nlen)
-{
+char * explode(char *buf, int len, int *nlen) {
 	int i, j;
 	char *bits = malloc(len * CHAR_BIT);
 

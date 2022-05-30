@@ -11,7 +11,9 @@ BTree* arr_mergesort(BTree *a, int n);
 
 BTree huff_chars_tree (BTree* ascii_chars);
 
-void codificar_valores(BTree arbolGenerado, char* codificacion, char* serializacion, int* len_codificacion, char** arr_codificaciones);
+void codificar_valores(BTree arbolGenerado, char* codificacion,
+                      char* serializacion, int* cant_hojas,
+                      int* len_codificacion, char** arr_codificaciones);
 
 char* codificar_archivo(char** arr_codificaciones, char* file_arr, int len_file);
 
