@@ -102,7 +102,7 @@ void arr_insertar_ordenadamente(BTree* ascii_chars_ordenado, BTree nuevoArbol,
 		}
 	}
 	/* move all data at der side of the array */
-	for(int i = len + 1; i >= p; i--)
+	for(int i = len - 1; i > p; i--)
 		ascii_chars_ordenado[i] = ascii_chars_ordenado[i-1];
 
 	/* insert value at the proper position */
@@ -142,26 +142,21 @@ void codificar_valores(BTree arbolGenerado, char* codificacion,
 	}
 
 	else if (arbolGenerado->izq == NULL && arbolGenerado->der == NULL) {
-		arr_codificaciones[(int)arbolGenerado->valor] = malloc(sizeof(char)* *len_codificacion);
+		arr_codificaciones[(int)arbolGenerado->valor] = malloc((sizeof(char)* *len_codificacion)+1);
 		memcpy(arr_codificaciones[(int)arbolGenerado->valor], codificacion, *len_codificacion);
+    arr_codificaciones[(int)arbolGenerado->valor][*len_codificacion] =  '\0';
 
 		serializacion[*cant_hojas] = arbolGenerado->valor;
     *cant_hojas += 1;
 	}
 }
 
-char* codificar_archivo(char** arr_codificaciones, char* file_arr, int len_file) {
-	int sz = 1024;
+char* codificar_archivo(char** arr_codificaciones, char* file_arr, int len_file, int maxLen) {
+	int sz = len_file * maxLen;
 	char* codificado = malloc(sizeof(char) * sz);
 	codificado[0] = 0;
-	int j = 0;
 	for(int i = 0; i < len_file; i++){
 		unsigned char c = file_arr[i];
-		if (j + (int)strlen(arr_codificaciones[(int) c]) >= sz) {
-			sz = sz * 2;
-			codificado = realloc(codificado, sizeof(char) * sz);
-		}
-		j = j + (int)strlen(arr_codificaciones[(int) c]);
 		strcat(codificado, arr_codificaciones[(int) c]);
 	}
 	return codificado;

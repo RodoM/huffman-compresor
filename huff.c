@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
 
   	char* codificacion = malloc(sizeof(char) * btree_altura(arbolGenerado));
 
-  	char* valoresSerializados = malloc(sizeof(char)*256);
+  	char* valoresSerializados = malloc(sizeof(char)*257);
   	valoresSerializados[0] = 0;
   	int lenCodificacion = 0;
     int cantHojas = 0;
@@ -38,12 +38,12 @@ int main(int argc, char **argv) {
 											&cantHojas, &lenCodificacion, codificaciones);
 
 		free(codificacion);
-		
+
     valoresSerializados[256] = '\0';
 
   	int cantNodos = btree_nnodos(arbolGenerado);
 
-  	char* cadenaCodificada = codificar_archivo(codificaciones, res, len);
+  	char* cadenaCodificada = codificar_archivo(codificaciones, res, len, btree_altura(arbolGenerado));
 
 		for (int i = 0; i < 256; i++)
 			free(codificaciones[i]);
@@ -54,14 +54,16 @@ int main(int argc, char **argv) {
 
   	int codificacionImplosionadaLen = 0;
   	char* codificacionImplosionada = implode(cadenaCodificada,
-																							(int)strlen(cadenaCodificada), 
+																							(int)strlen(cadenaCodificada),
 																							&codificacionImplosionadaLen);
 
 		free(cadenaCodificada);
-
-  	writefile("f.txt.hf", codificacionImplosionada,
+		char* nombreArchivo = malloc((sizeof(char) * strlen(argv[2])) + 2);
+		nombreArchivo = strcat(argv[2], ".hf");
+  	writefile(nombreArchivo, codificacionImplosionada,
 							codificacionImplosionadaLen);
 
+		// free(nombreArchivo);
 		free(codificacionImplosionada);
 
   	char* arbolSerializado = malloc(sizeof(int)*cantNodos);
@@ -81,7 +83,9 @@ int main(int argc, char **argv) {
 		free(valoresSerializados);
 		free(arbolSerializado);
 
-  	writefile("f.txt.tree", serializacion, serializacionLen);
+		char* nombreArchivoTree = malloc((sizeof(char) * strlen(argv[2])) + 2);
+		nombreArchivoTree = strcat(argv[2], ".tree");
+  	writefile(nombreArchivoTree, serializacion, serializacionLen);
 
 		free(serializacion);
   }
@@ -116,16 +120,15 @@ int main(int argc, char **argv) {
 
 		free(arbolSerializado);
 		free(valoresSerializados);
-		
-		char* decodificacion = decodificar_archivo(arbolReconstruido, codificacionExplosionadaLen, codificacionExplosionada);
-
+    int decodificacion_len = 0;
+		char* decodificacion = decodificar_archivo(arbolReconstruido, codificacionExplosionadaLen, codificacionExplosionada, &decodificacion_len);
 		free(codificacionExplosionada);
 		btree_destruir(arbolReconstruido);
 
-		writefile("f.txt.dec", decodificacion, strlen(decodificacion));
+		writefile("f.txt.dec", decodificacion, decodificacion_len);
 
 		free(decodificacion);
   }
-	
+
   return 0;
 }
