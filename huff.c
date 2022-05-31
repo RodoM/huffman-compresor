@@ -58,12 +58,13 @@ int main(int argc, char **argv) {
 																							&codificacionImplosionadaLen);
 
 		free(cadenaCodificada);
-		char* nombreArchivo = malloc((sizeof(char) * strlen(argv[2])) + 2);
-		nombreArchivo = strcat(argv[2], ".hf");
-  	writefile(nombreArchivo, codificacionImplosionada,
+
+		char* nombreArchivoC = malloc((sizeof(char) * strlen(argv[2])) + 3);
+		nombreArchivoC = memcpy(strcpy(nombreArchivoC, argv[2]), ".hf", strlen(argv[2]) + 3);
+  	writefile(nombreArchivoC, codificacionImplosionada,
 							codificacionImplosionadaLen);
 
-		// free(nombreArchivo);
+		free(nombreArchivoC);
 		free(codificacionImplosionada);
 
   	char* arbolSerializado = malloc(sizeof(int)*cantNodos);
@@ -83,10 +84,11 @@ int main(int argc, char **argv) {
 		free(valoresSerializados);
 		free(arbolSerializado);
 
-		char* nombreArchivoTree = malloc((sizeof(char) * strlen(argv[2])) + 2);
-		nombreArchivoTree = strcat(argv[2], ".tree");
-  	writefile(nombreArchivoTree, serializacion, serializacionLen);
+		char* nombreArchivoT = malloc((sizeof(char) * strlen(argv[2])) + 5);
+		nombreArchivoT = memcpy(strcpy(nombreArchivoT, argv[2]), ".tree", strlen(argv[2]) + 5);
+  	writefile(nombreArchivoT, serializacion, serializacionLen);
 
+		free(nombreArchivoT);
 		free(serializacion);
   }
 
@@ -125,8 +127,12 @@ int main(int argc, char **argv) {
 		free(codificacionExplosionada);
 		btree_destruir(arbolReconstruido);
 
-		writefile("f.txt.dec", decodificacion, decodificacion_len);
+		char* nombreArchivoD = malloc((sizeof(char) * strlen(argv[2])) + 1);
+		strncpy(nombreArchivoD, argv[2], strlen(argv[2]) - 3);
+		nombreArchivoD = memcpy(nombreArchivoD, ".dec", 4);
+		writefile(nombreArchivoD, decodificacion, decodificacion_len);
 
+		free(nombreArchivoD);
 		free(decodificacion);
   }
 
