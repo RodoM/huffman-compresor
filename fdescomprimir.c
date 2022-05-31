@@ -3,35 +3,31 @@
 #include <stdio.h>
 #include "btree.h"
 
-BTree descomprimir_arbol(char* forma, int *len_forma, char *contenido,
-												int* len_contenido) {
-		if (forma[*len_forma] == '1'){
-			BTree nuevo_nodo = malloc(sizeof(struct _BTNodo));
-			unsigned char c = contenido[*len_contenido];
-			nuevo_nodo->valor = (int) c;
-			nuevo_nodo->frecuencia = 0;
-			nuevo_nodo->izq = NULL;
-			nuevo_nodo->der = NULL;
-			//printf("%d\n", *len_contenido);
-			*len_contenido += 1;
-			return nuevo_nodo;
+BTree descomprimir_arbol(char* forma, int *formaLen, char *contenido, int* contenidoLen) {
+		if (forma[*formaLen] == '1'){
+			BTree nuevoNodo = malloc(sizeof(struct _BTNodo));
+			unsigned char c = contenido[*contenidoLen];
+			nuevoNodo->valor = (int) c;
+			nuevoNodo->frecuencia = 0;
+			nuevoNodo->izq = NULL;
+			nuevoNodo->der = NULL;
+			*contenidoLen += 1;
+			return nuevoNodo;
 		}
-		*len_forma += 1;
-		BTree arbol_izquierdo = descomprimir_arbol(forma, len_forma, contenido,
-																							len_contenido);
-		*len_forma += 1;
-		BTree arbol_derecho = descomprimir_arbol(forma, len_forma, contenido,
-																						len_contenido);
-		BTree arbol = btree_unir(-1, arbol_izquierdo, arbol_derecho);
+		*formaLen += 1;
+		BTree arbolIzq = descomprimir_arbol(forma, formaLen, contenido, contenidoLen);
+		*formaLen += 1;
+		BTree arbolDer = descomprimir_arbol(forma, formaLen, contenido, contenidoLen);
+		BTree arbol = btree_unir(-1, arbolIzq, arbolDer);
 		return arbol;
 }
 
-char* decodificar_archivo(BTree arbolReconstruido, int codificacionExplosionadaLen, char* codificacionExplosionada, int* indexDecodificacion) {
+char* decodificar_archivo(BTree arbolReconstruido, int codificacionLen, char* codificacionExplosionada, int* decodificacionLen) {
 	int sz = 1024;
 	char* decodificado = malloc(sizeof(char) * sz);
 	int indexCodificacion = 0;
 	BTree nodoApuntado = arbolReconstruido;
-	while (indexCodificacion < codificacionExplosionadaLen) {
+	while (indexCodificacion < codificacionLen) {
 		if (nodoApuntado->izq != NULL && nodoApuntado->der != NULL) {
 			if (codificacionExplosionada[indexCodificacion] == '0') {
 				nodoApuntado = nodoApuntado->izq;
@@ -43,12 +39,12 @@ char* decodificar_archivo(BTree arbolReconstruido, int codificacionExplosionadaL
 			}
 		}
 		if (nodoApuntado->izq == NULL && nodoApuntado->der == NULL) {
-			if (*indexDecodificacion == sz) {
+			if (*decodificacionLen == sz) {
 				sz = sz * 2;
 				decodificado = realloc(decodificado, sizeof(char) * sz);
 			}
-			decodificado[*indexDecodificacion] = (char)nodoApuntado->valor;
-			*indexDecodificacion += 1;
+			decodificado[*decodificacionLen] = (char)nodoApuntado->valor;
+			*decodificacionLen += 1;
 			nodoApuntado = arbolReconstruido;
 		}
 	}

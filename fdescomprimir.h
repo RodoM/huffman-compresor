@@ -1,10 +1,8 @@
 #ifndef __FDESCOMPRIMIR_H_
 #define __FDESCOMPRIMIR_H_
 
-BTree descomprimir_arbol(char* forma,int* len_forma, char *contenido,
-                        int* len_contenido);
+BTree descomprimir_arbol(char* forma,int* formaLen, char *contenido, int* contenidoLen);
 
-char* decodificar_archivo(BTree arbolReconstruido, int codificacionLen,
-                          char* codificacion, int* decodificacion_len);
+char* decodificar_archivo(BTree arbolReconstruido, int codificacionLen, char* codificacion, int* decodificacionLen);
 
 #endif
