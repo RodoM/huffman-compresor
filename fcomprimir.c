@@ -59,7 +59,6 @@ BTree *arr_merge(BTree * a1, int l1, BTree * a2, int l2) {
   return r;
 }
 
-/* Devuelve una copia de [asciiChars] */
 BTree *arr_mergesort(BTree * asciiChars, int n) {
   assert(n > 0);
   if (n < 2) {
@@ -80,19 +79,9 @@ BTree *arr_mergesort(BTree * asciiChars, int n) {
   return mm;
 }
 
-//Funcion que llame a btree_unir con el nodo "vacio" y los 2 primeros arboles del arr
-//Insertar el nuevo arbol de manera ordenada. Repetir hasta que el arr sea de largo 1 el
-//cual sera el arbol construido.
-
-//Representamos la union de arboles como ():
-// [7,6,5,4,3,2,1,0] -> [7,6,5,4,3,2,(1),1,0] -> [7,6,5,4,3,2,(1)] -> [7,6,5,4,(3),3,2,(1)] -> [7,6,5,4,(3),3]
-// -> [7,(6),6,5,4,(3),3] -> [7,(6),6,5,4] -> [(9),7,(6),6,5,4] -> [(9),7,(6),6] -> [(12),(9),7,(6),6] -> [(12),(9),7]
-// -> [(12),(9),7] -> [(16),(12),(9),7] -> [(16),(12)] -> [(28),(16),(12)] -> [(28)] -> (28)
-
 void arr_insertar_ordenadamente(BTree * asciiCharsOrdenado, BTree nuevoArbol,
                                 int len) {
   int p;
-  /* Determine the position where the new value will be insert. */
   for (int i = 0; i < len; i++) {
     if (nuevoArbol->frecuencia >= asciiCharsOrdenado[i]->frecuencia) {
       p = i;
@@ -101,11 +90,9 @@ void arr_insertar_ordenadamente(BTree * asciiCharsOrdenado, BTree nuevoArbol,
       p = i + 1;
     }
   }
-  /* move all data at der side of the array */
   for (int i = len - 1; i > p; i--)
     asciiCharsOrdenado[i] = asciiCharsOrdenado[i - 1];
 
-  /* insert value at the proper position */
   asciiCharsOrdenado[p] = nuevoArbol;
 }
 
@@ -120,10 +107,6 @@ BTree huff_chars_tree(BTree * asciiCharsOrdenado) {
   return asciiCharsOrdenado[0];
 }
 
-//Retorna un arr con el orden ASCII con la codificacion de cada uno de los 256 valores.
-//char* arr = malloc(sizeof(int)*256);
-
-//cuando empiece el sub-arbol derecho la codificacion vuelva a estar vacia.
 void codificar_valores(BTree arbolGenerado, char *codificacion,
                        char *serializacion, int *cantidadHojas,
                        int *codificacionLen, char **arrCodificaciones) {
@@ -154,14 +137,14 @@ void codificar_valores(BTree arbolGenerado, char *codificacion,
 }
 
 char *codificar_archivo(char **arrCodificaciones, char *fileArr, int fileLen,
-                        int maxLen, int* codificacionValorLen) {
+                        int maxLen, int *codificacionValorLen) {
   int sz = fileLen * maxLen;
   char *codificado = malloc(sizeof(char) * sz);
   codificado[0] = 0;
   for (int i = 0; i < fileLen; i++) {
     unsigned char c = fileArr[i];
-    int cod = strlen(arrCodificaciones[(int)c]);
-    memcpy(codificado + *codificacionValorLen, arrCodificaciones[(int)c], cod);
+    int cod = strlen(arrCodificaciones[(int) c]);
+    memcpy(codificado + *codificacionValorLen, arrCodificaciones[(int) c], cod);
     *codificacionValorLen += cod;
   }
   return codificado;
