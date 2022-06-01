@@ -154,13 +154,15 @@ void codificar_valores(BTree arbolGenerado, char *codificacion,
 }
 
 char *codificar_archivo(char **arrCodificaciones, char *fileArr, int fileLen,
-                        int maxLen) {
+                        int maxLen, int* codificacionValorLen) {
   int sz = fileLen * maxLen;
   char *codificado = malloc(sizeof(char) * sz);
   codificado[0] = 0;
   for (int i = 0; i < fileLen; i++) {
     unsigned char c = fileArr[i];
-    strcat(codificado, arrCodificaciones[(int) c]);
+    int cod = strlen(arrCodificaciones[(int)c]);
+    memcpy(codificado + *codificacionValorLen, arrCodificaciones[(int)c], cod);
+    *codificacionValorLen += cod;
   }
   return codificado;
 }

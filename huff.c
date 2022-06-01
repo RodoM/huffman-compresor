@@ -7,14 +7,11 @@
 #include "fdescomprimir.h"
 #include "io.h"
 
-void imprimir(int valor, int frecuencia) {
-  printf("%d, %d\n", valor, frecuencia);
-}
-
 int main(int argc, char **argv) {
 
   if (!strcmp(argv[1], "C")) {
     assert(argc == 3);
+
     int len = 0;
     char *res = readfile(argv[2], &len);
 
@@ -43,9 +40,10 @@ int main(int argc, char **argv) {
 
     int cantidadNodos = btree_nnodos(arbolGenerado);
 
+    int codificacionValorLen = 0;
     char *cadenaCodificada =
         codificar_archivo(codificaciones, res, len,
-                          btree_altura(arbolGenerado));
+                          btree_altura(arbolGenerado), &codificacionValorLen);
 
     for (int i = 0; i < 256; i++)
       free(codificaciones[i]);
@@ -56,16 +54,20 @@ int main(int argc, char **argv) {
 
     int codificacionImplosionadaLen = 0;
     char *codificacionImplosionada =
-        implode(cadenaCodificada, (int) strlen(cadenaCodificada),
+        implode(cadenaCodificada, codificacionValorLen,
                 &codificacionImplosionadaLen);
 
     free(cadenaCodificada);
-    char *nombreArchivo = malloc((sizeof(char) * strlen(argv[2])) + 2);
-    nombreArchivo = strcat(argv[2], ".hf");
-    writefile(nombreArchivo, codificacionImplosionada,
+
+    int nombreArchivoLen = strlen(argv[2]);
+    char *nombreArchivoC = malloc((sizeof(char) * nombreArchivoLen) + 4);
+    memcpy(nombreArchivoC, argv[2], nombreArchivoLen);
+    memcpy(nombreArchivoC + nombreArchivoLen, ".hf", 3);
+    nombreArchivoC[nombreArchivoLen + 3] = '\0';
+    writefile(nombreArchivoC, codificacionImplosionada,
               codificacionImplosionadaLen);
 
-    // free(nombreArchivo);
+    free(nombreArchivoC);
     free(codificacionImplosionada);
 
     char *arbolSerializado = malloc(sizeof(int) * cantidadNodos);
@@ -85,15 +87,18 @@ int main(int argc, char **argv) {
     free(valoresSerializados);
     free(arbolSerializado);
 
-    char *nombreArchivoTree = malloc((sizeof(char) * strlen(argv[2])) + 2);
-    nombreArchivoTree = strcat(argv[2], ".tree");
-    writefile(nombreArchivoTree, serializacion, serializacionLen);
+    char *nombreArchivoT = malloc((sizeof(char) * strlen(argv[2])) + 6);
+    memcpy(nombreArchivoT, argv[2], nombreArchivoLen);
+    memcpy(nombreArchivoT + nombreArchivoLen, ".tree", 5);
+    nombreArchivoT[nombreArchivoLen + 5] = '\0';
+    writefile(nombreArchivoT, serializacion, serializacionLen);
 
+    free(nombreArchivoT);
     free(serializacion);
   }
 
   else if (!strcmp(argv[1], "D")) {
-    assert(argc == 4);
+    assert(argc == 3);
     int codificacionLen = 0;
     char *codificacion = readfile(argv[2], &codificacionLen);
     int codificacionExplosionadaLen = 0;
@@ -103,7 +108,14 @@ int main(int argc, char **argv) {
     free(codificacion);
 
     int serializacionLen = 0;
-    char *serializaciones = readfile(argv[3], &serializacionLen);
+    int nombreArchivoLen = strlen(argv[2]);
+    char* nombreArchivoT = malloc((sizeof(char) * nombreArchivoLen) + 3);
+    memcpy(nombreArchivoT, argv[2], nombreArchivoLen - 2);
+    memcpy(nombreArchivoT + nombreArchivoLen - 2, "tree", 4);
+    nombreArchivoT[nombreArchivoLen + 2] = '\0';
+    char *serializaciones = readfile(nombreArchivoT, &serializacionLen);
+
+    free(nombreArchivoT);
 
     char *arbolSerializado = malloc(sizeof(char) * 512);
     strncpy(arbolSerializado, serializaciones, 511);
@@ -129,8 +141,14 @@ int main(int argc, char **argv) {
     free(codificacionExplosionada);
     btree_destruir(arbolReconstruido);
 
-    writefile("f.txt.dec", decodificacion, decodificacionLen);
+    char* nombreArchivoD = malloc((sizeof(char)*nombreArchivoLen) + 2);
+    memcpy(nombreArchivoD, argv[2], nombreArchivoLen - 2);
+    memcpy((nombreArchivoD + nombreArchivoLen) - 2, "dec", 3);
+    nombreArchivoD[nombreArchivoLen + 1] = '\0';
 
+    writefile(nombreArchivoD, decodificacion, decodificacionLen);
+
+    free(nombreArchivoD);
     free(decodificacion);
   }
 
