@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 #include "btree.h"
 
 BTree descomprimir_arbol(char *forma, int *formaLen, char *contenido,

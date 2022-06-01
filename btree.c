@@ -1,6 +1,5 @@
 #include <assert.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include "btree.h"
 
 void btree_destruir(BTree nodo) {

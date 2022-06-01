@@ -1,7 +1,6 @@
-#include <stdio.h>
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 #include "btree.h"
 #include "fcomprimir.h"
 #include "fdescomprimir.h"
