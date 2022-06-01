@@ -32,16 +32,16 @@ int main(int argc, char **argv) {
 
     char *valoresSerializados = malloc(sizeof(char) * 257);
     valoresSerializados[0] = 0;
-    int lenCodificacion = 0;
+    int codificacionLen = 0;
     int cantHojas = 0;
     codificar_valores(arbolGenerado, codificacion, valoresSerializados,
-                      &cantHojas, &lenCodificacion, codificaciones);
+                      &cantHojas, &codificacionLen, codificaciones);
 
     free(codificacion);
 
     valoresSerializados[256] = '\0';
 
-    int cantNodos = btree_nnodos(arbolGenerado);
+    int cantidadNodos = btree_nnodos(arbolGenerado);
 
     char *cadenaCodificada =
         codificar_archivo(codificaciones, res, len,
@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
     // free(nombreArchivo);
     free(codificacionImplosionada);
 
-    char *arbolSerializado = malloc(sizeof(int) * cantNodos);
+    char *arbolSerializado = malloc(sizeof(int) * cantidadNodos);
     arbolSerializado[0] = 0;
     serializar_arbol(arbolGenerado, arbolSerializado);
 
@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
     free(asciiChars);
     free(asciiCharsOrdenado);
 
-    int serializacionLen = 256 + cantNodos;
+    int serializacionLen = 256 + cantidadNodos;
     char *serializacion = malloc(sizeof(char) * serializacionLen);
     serializacion[0] = 0;
     memcpy(serializacion, arbolSerializado, 511 * sizeof(char));
@@ -122,14 +122,14 @@ int main(int argc, char **argv) {
 
     free(arbolSerializado);
     free(valoresSerializados);
-    int decodificacion_len = 0;
+    int decodificacionLen = 0;
     char *decodificacion =
         decodificar_archivo(arbolReconstruido, codificacionExplosionadaLen,
-                            codificacionExplosionada, &decodificacion_len);
+                            codificacionExplosionada, &decodificacionLen);
     free(codificacionExplosionada);
     btree_destruir(arbolReconstruido);
 
-    writefile("f.txt.dec", decodificacion, decodificacion_len);
+    writefile("f.txt.dec", decodificacion, decodificacionLen);
 
     free(decodificacion);
   }
