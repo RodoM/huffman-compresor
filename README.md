@@ -20,6 +20,10 @@ make
 ```
 ./huff D tuArchivo.hf
 ```
+### Limpiar archivos compilados
+```
+make clean
+```
 
 ## Testing
 ### Compilar los archivos
