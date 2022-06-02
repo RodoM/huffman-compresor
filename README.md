@@ -26,7 +26,11 @@ make clean
 ```
 
 ## Testing
-### Compilar los archivos
+### Compilar los archivos (si no lo estan)
+```
+make
+```
+### Compilar el archivo de tests
 ```
 gcc -o tests tests.c btree.o fcomprimir.o fdescomprimir.o
 ```
