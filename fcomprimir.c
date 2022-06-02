@@ -3,8 +3,8 @@
 #include <string.h>
 #include "btree.h"
 
-BTree *arr_ascii_chars() {
-  BTree *asciiChars = malloc(sizeof(BTree) * 256);
+BTree *arr_ascii() {
+  BTree *arrAscii = malloc(sizeof(BTree) * 256);
   for (int i = 0; i < 256; i++) {
     BTree nuevoArbol = malloc(sizeof(struct _BTNodo));
     nuevoArbol->valor = i;
@@ -12,20 +12,20 @@ BTree *arr_ascii_chars() {
     nuevoArbol->izq = NULL;
     nuevoArbol->der = NULL;
 
-    asciiChars[i] = nuevoArbol;
+    arrAscii[i] = nuevoArbol;
   }
-  return asciiChars;
+  return arrAscii;
 }
 
-void arr_ascii_chars_frec(char *res, int len, BTree * asciiChars) {
+void arr_ascii_frec(char *res, int len, BTree * arrAscii) {
   for (int i = 0; i < len; i++) {
     unsigned char c = res[i];
     int index = (int) c;
-    asciiChars[index]->frecuencia += 1;
+    arrAscii[index]->frecuencia += 1;
   }
 }
 
-BTree *arr_merge(BTree * a1, int l1, BTree * a2, int l2) {
+BTree *merge(BTree * a1, int l1, BTree * a2, int l2) {
   BTree *r = malloc((l1 + l2) * sizeof r[0]);
   int i, j, k;
   i = 0;
@@ -58,19 +58,19 @@ BTree *arr_merge(BTree * a1, int l1, BTree * a2, int l2) {
   return r;
 }
 
-BTree *arr_mergesort(BTree * asciiChars, int n) {
+BTree *mergesort(BTree * arrAscii, int n) {
   assert(n > 0);
   if (n < 2) {
     BTree *r = malloc(n * sizeof r[0]);
-    r[0] = asciiChars[0];
+    r[0] = arrAscii[0];
     return r;
   }
 
   int m = n / 2;
-  BTree *ll = arr_mergesort(asciiChars, m);
-  BTree *rr = arr_mergesort(asciiChars + m, n - m);
+  BTree *ll = mergesort(arrAscii, m);
+  BTree *rr = mergesort(arrAscii + m, n - m);
 
-  BTree *mm = arr_merge(ll, m, rr, n - m);
+  BTree *mm = merge(ll, m, rr, n - m);
 
   free(ll);
   free(rr);
@@ -78,11 +78,11 @@ BTree *arr_mergesort(BTree * asciiChars, int n) {
   return mm;
 }
 
-void arr_insertar_ordenadamente(BTree * asciiCharsOrdenado, BTree nuevoArbol,
+void arr_insertar_ordenadamente(BTree * arrAsciiOrdenado, BTree nuevoArbol,
                                 int len) {
   int p;
   for (int i = 0; i < len; i++) {
-    if (nuevoArbol->frecuencia >= asciiCharsOrdenado[i]->frecuencia) {
+    if (nuevoArbol->frecuencia >= arrAsciiOrdenado[i]->frecuencia) {
       p = i;
       break;
     } else {
@@ -90,20 +90,20 @@ void arr_insertar_ordenadamente(BTree * asciiCharsOrdenado, BTree nuevoArbol,
     }
   }
   for (int i = len - 1; i > p; i--)
-    asciiCharsOrdenado[i] = asciiCharsOrdenado[i - 1];
+    arrAsciiOrdenado[i] = arrAsciiOrdenado[i - 1];
 
-  asciiCharsOrdenado[p] = nuevoArbol;
+  arrAsciiOrdenado[p] = nuevoArbol;
 }
 
-BTree huff_chars_tree(BTree * asciiCharsOrdenado) {
+BTree huffman_tree(BTree * arrAsciiOrdenado) {
   int len = 256;
   while (len > 1) {
-    BTree nuevoArbol = btree_unir(-1, asciiCharsOrdenado[len - 1],
-                                  asciiCharsOrdenado[len - 2]);
+    BTree nuevoArbol = btree_unir(-1, arrAsciiOrdenado[len - 1],
+                                  arrAsciiOrdenado[len - 2]);
     len = len - 1;
-    arr_insertar_ordenadamente(asciiCharsOrdenado, nuevoArbol, len);
+    arr_insertar_ordenadamente(arrAsciiOrdenado, nuevoArbol, len);
   }
-  return asciiCharsOrdenado[0];
+  return arrAsciiOrdenado[0];
 }
 
 void codificar_valores(BTree arbolGenerado, char *codificacion,

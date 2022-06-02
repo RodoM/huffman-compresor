@@ -15,10 +15,10 @@ int main(int argc, char **argv) {
     char *res = readfile(argv[2], &len);
     
     //Inicio de la creacion del arbol.
-    BTree *asciiChars = arr_ascii_chars();
-    arr_ascii_chars_frec(res, len, asciiChars);
-    BTree *asciiCharsOrdenado = arr_mergesort(asciiChars, 256);
-    BTree arbolGenerado = huff_chars_tree(asciiCharsOrdenado);
+    BTree *arrAscii = arr_ascii();
+    arr_ascii_frec(res, len, arrAscii);
+    BTree *arrAsciiOrdenado = mergesort(arrAscii, 256);
+    BTree arbolGenerado = huffman_tree(arrAsciiOrdenado);
 
     //Codificacion de los caracteres y serializacion de los valores de las
     //hojas.
@@ -69,8 +69,8 @@ int main(int argc, char **argv) {
     serializar_arbol(arbolGenerado, arbolSerializado);
     //Destruccion del arbol.
     btree_destruir(arbolGenerado);
-    free(asciiChars);
-    free(asciiCharsOrdenado);
+    free(arrAscii);
+    free(arrAsciiOrdenado);
 
     //Concatenacion de las serializaciones.
     int serializacionLen = 256 + cantidadNodos;

@@ -5,29 +5,29 @@
 * Retorna un array de btrees ordenado segun ascii, cada uno de ellos es un 
 * caracter ascii.
 */
-BTree *arr_ascii_chars();
+BTree *arr_ascii();
 
 /*
 * Aumenta las frecuencias de los arboles cuyo valor se encuentra en el buffer
 * creado por el archivo de entrada.
 */
-void arr_ascii_chars_frec(char *res, int len, BTree * asciiChars);
+void arr_ascii_frec(char *res, int len, BTree * arrAscii);
 
 /*
 * Funcion auxiliar para mergesort que se encarga de tomar dos arrays y devuelve
 * uno con sus elementos ordenados.
 */
-BTree *arr_merge(BTree * a1, int l1, BTree * a2, int l2);
+BTree *merge(BTree * a1, int l1, BTree * a2, int l2);
 
 /*
 * Ordena el array de arboles por frecuencia de mayor a menor.
 */
-BTree *arr_mergesort(BTree * asciiChars, int n);
+BTree *mergesort(BTree * arrAscii, int n);
 
 /*
 * Crea el arbol siguiendo el algoritmo de Huffman.
 */
-BTree huff_chars_tree(BTree * asciiChars);
+BTree huffman_tree(BTree * arrAscii);
 
 /*
 * Obtiene la codificacion de cada valor de los caracteres ascii.
