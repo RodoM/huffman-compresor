@@ -107,8 +107,6 @@ void test_codificar_archivo() {
   assert(len == 8);
 
   free(texto);
-  // for(int i = 0; i < 256; i++)
-  //   free(codificaciones[i]);
   free(codificaciones);
   free(codificado);
 }
@@ -230,8 +228,8 @@ void test_decodificar_archivo() {
   char *textoDecodificado =
       decodificar_archivo(arbol, 8, codificacion, &decodlen);
   textoDecodificado[decodlen] = '\0';
-  char *texto = malloc(sizeof(char) * 4);
-  memcpy(texto, "Hola", 4);
+  char *texto = malloc(sizeof(char) * 5);
+  memcpy(texto, "Hola", 5);
 
   assert(strcmp(textoDecodificado, texto) == 0);
   assert(decodlen == 4);
